@@ -81,29 +81,29 @@ LOGOUT_REDIRECT_URL = 'home'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': 'login_reg2.db',
-#         # 'USER': 'root',
-#         # 'PASSWORD': 'root',
-#         # 'HOST': 'localhost',
-#         # 'PORT': '3306',
-#     }
-# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'railway',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'login_reg2.db',
         'USER': 'root',
-        'PASSWORD': 'On8k1MbEiBkeRjaWHLk6',
-        'HOST': 'containers-us-west-74.railway.app',
-        'PORT': '7537',
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-        },
-    },
+        'PASSWORD': 'root',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'railway',
+#         'USER': 'root',
+#         'PASSWORD': 'On8k1MbEiBkeRjaWHLk6',
+#         'HOST': 'containers-us-west-74.railway.app',
+#         'PORT': '7537',
+#         'OPTIONS': {
+#             'charset': 'utf8mb4',
+#         },
+#     },
+# }
 
 
 # Password validation
@@ -146,6 +146,6 @@ USE_TZ = True
 STATIC_URL = '/rbastatic/'
 #STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 VENV_PATH = os.path.dirname(BASE_DIR)
-STATIC_ROOT = '/home/eihy0p9s0spe/public_html/rba/rbastatic'
-
+# STATIC_ROOT = '/home/eihy0p9s0spe/public_html/rba/rbastatic'
+STATIC_ROOT = '/rbastatic/'
 #django_heroku.settings(locals())
