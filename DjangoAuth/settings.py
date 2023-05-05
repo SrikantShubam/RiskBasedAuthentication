@@ -81,15 +81,28 @@ LOGOUT_REDIRECT_URL = 'home'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': 'login_reg2.db',
+#         # 'USER': 'root',
+#         # 'PASSWORD': 'root',
+#         # 'HOST': 'localhost',
+#         # 'PORT': '3306',
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'login_reg2.db',
-        # 'USER': 'root',
-        # 'PASSWORD': 'root',
-        # 'HOST': 'localhost',
-        # 'PORT': '3306',
-    }
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'railway',
+        'USER': 'root',
+        'PASSWORD': 'On8k1MbEiBkeRjaWHLk6',
+        'HOST': 'containers-us-west-74.railway.app',
+        'PORT': '7537',
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+        },
+    },
 }
 
 
