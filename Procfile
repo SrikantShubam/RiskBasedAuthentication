@@ -1,1 +1,1 @@
-web gunicorn DjangoAuth.wsgi:application --log-file -
+web: gunicorn DjangoAuth.wsgi --log-file -
