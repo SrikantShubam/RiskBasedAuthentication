@@ -44,7 +44,7 @@ def home(request):
             #lang----------------start-----------
             lang_start=time.time()
             lang=request.META['HTTP_ACCEPT_LANGUAGE']
-            print(lang)
+            # print(lang)
             lang_end=time.time()
             lang_totaltime=lang_end-lang_start
              #-------------lang end---------------
@@ -61,11 +61,11 @@ def home(request):
             start_timezone = time.time()
 
             local_timezone = datetime.datetime.now(datetime.timezone.utc).astimezone().tzinfo
-            print("Timezone of the user is --> ",local_timezone)
+            # print("Timezone of the user is --> ",local_timezone)
             # printing date and time 
-            print("Date Time: ",aware_datetime)
-            print('date time -----',naive_datetime.date())
-            print('date time -----',naive_datetime.time())
+            # print("Date Time: ",aware_datetime)
+            # print('date time -----',naive_datetime.date())
+            # print('date time -----',naive_datetime.time())
             time_collected=naive_datetime.time()   #time collected 
             end_timezone = time.time()
             final_timezone=end_timezone-start_timezone
@@ -77,7 +77,7 @@ def home(request):
              # getting ip-----------------------------------
             start_ip = time.time()
             response = requests.get('https://api64.ipify.org?format=json').json()
-            ip_address = response["ip"]
+            ip_address =  request.META.get('HTTP_X_FORWARDED_FOR', request.META.get('REMOTE_ADDR'))
 
 #             ip_address=print(request.META['REMOTE_ADDR'])
 
@@ -110,7 +110,7 @@ def home(request):
             ua_endtime = time.time()
             ua_totaltime = ua_endtime - ua_starttime
 
-            print("ua----------- ",ua_totaltime)
+            # print("ua----------- ",ua_totaltime)
             #browser end----------------------
             #screen size ---------------------------
           
@@ -181,6 +181,8 @@ def home(request):
            
             total_end=time.time()
             overall_totaltime=total_end-total_start
+
+            print(ip_address)
             data=data_collected(Uid=uid,userid=username,ip=ip_address,system_fonts=sys_fonts,language=lang,time_zone =local_timezone,date=naive_datetime.date(),time_collected=time_collected,city=city,region=region,country=country,browser_name=browser_ua.family, browser_version =browser_ua.version_string,os_family=system_ua.family,os_version=system_ua.version_string,ua_totaltime=ua_totaltime,ip_totaltime=final_ip,timezone_totaltime=final_timezone,location_totaltime=location_totaltime,system_fonts_totaltime=fonts_totaltime,lang_totaltime=lang_totaltime,overall_totaltime=overall_totaltime)
             data.save()
 
