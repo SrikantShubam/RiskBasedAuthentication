@@ -76,6 +76,7 @@ WSGI_APPLICATION = 'DjangoAuth.wsgi.application'
 AUTH_USER_MODEL = 'authen.CustomUser'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
+CSRF_COOKIE_DOMAIN = 'https://riskbasedauthentication-production.up.railway.app'
 
 CORS_ALLOWED_ORIGINS = [
     "https://riskbasedauthentication-production.up.railway.app",
@@ -151,6 +152,6 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 VENV_PATH = os.path.dirname(BASE_DIR)
 # STATIC_ROOT = '/home/eihy0p9s0spe/public_html/rba/rbastatic'
 # STATIC_ROOT = '/rbastatic/'
-# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
 STATIC_ROOT =os.path.join(BASE_DIR, 'staticfiles')
 #django_heroku.settings(locals())
