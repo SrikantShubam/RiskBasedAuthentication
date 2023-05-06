@@ -40,12 +40,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'authen.apps.AuthenConfig',
+    "whitenoise.runserver_nostatic",
     # 'DjangoAuth.apps.DjangoAuthConfig',
 ]
 
 MIDDLEWARE = [
     'django_user_agents.middleware.UserAgentMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -148,12 +151,20 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
+# STATIC_HOST=https://riskbasedauthentication-production.up.railway.app/
 
-STATIC_URL = '/rbastatic/'
+STATIC_HOST = "https://riskbasedauthentication-production.up.railway.app" if not DEBUG else ""
+STATIC_URL = STATIC_HOST + "/static/"
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 VENV_PATH = os.path.dirname(BASE_DIR)
 # STATIC_ROOT = '/home/eihy0p9s0spe/public_html/rba/rbastatic'
 # STATIC_ROOT = '/rbastatic/'
 
 STATIC_ROOT =os.path.join(BASE_DIR, 'staticfiles')
+
+
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 #django_heroku.settings(locals())
