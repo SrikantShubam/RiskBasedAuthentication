@@ -82,7 +82,9 @@ LOGOUT_REDIRECT_URL = 'home'
 CSRF_COOKIE_DOMAIN = 'https://riskbasedauthentication-production.up.railway.app'
 CSRF_COOKIE_SECURE = False
 CSRF_COOKIE_HTTPONLY = False
-
+CSRF_TRUSTED_ORIGINS=[
+    "https://riskbasedauthentication-production.up.railway.app",
+]
 CORS_ALLOWED_ORIGINS = [
     "https://riskbasedauthentication-production.up.railway.app",
     # Add other allowed origins here if needed
