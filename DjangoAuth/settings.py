@@ -77,7 +77,10 @@ AUTH_USER_MODEL = 'authen.CustomUser'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
-
+CORS_ALLOWED_ORIGINS = [
+    "https://riskbasedauthentication-production.up.railway.app",
+    # Add other allowed origins here if needed
+]
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
