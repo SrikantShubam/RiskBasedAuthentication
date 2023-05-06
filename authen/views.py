@@ -17,13 +17,13 @@ from datetime import date
 from django.db import models, signals
 from django.contrib.auth.models import User
 
-
-
+from django.http import JsonResponse
+import json
 
 def home(request):
     
         
-        if request.user is not None:
+        if request.user is not None :
             obj11=datetime.datetime.now()
             time_stamp=str(make_aware(obj11).hour)+"H"+str(make_aware(obj11).minute)+"M"
             date_stamp=str(make_aware(obj11).day)+"D"+str(make_aware(obj11).month)+"M"+str(make_aware(obj11).year)+"Y"
@@ -179,19 +179,91 @@ def home(request):
             # os.remove(r"C:\Users\Srikant Shubham\Downloads\canvas.json")
             # os.remove(r"C:\Users\Srikant Shubham\Downloads\webgl.json")
             geo_loc_time=time.time()
-            latitude = request.POST.get('latitude')
-            longitude = request.POST.get('longitude')
-            geo_loc_end_time=time.time()
-            geolocation_totaltime=geo_loc_end_time-geo_loc_time
-            total_end=time.time()
-            overall_totaltime=total_end-total_start
-            
-            print(ip_address)
-            data=data_collected(Uid=uid,userid=username,latitude=latitude,longitude=longitude,geolocation_totaltime=geolocation_totaltime,ip=ip_address,system_fonts=sys_fonts,language=lang,time_zone =local_timezone,date=naive_datetime.date(),time_collected=time_collected,city=city,region=region,country=country,browser_name=browser_ua.family, browser_version =browser_ua.version_string,os_family=system_ua.family,os_version=system_ua.version_string,ua_totaltime=ua_totaltime,ip_totaltime=final_ip,timezone_totaltime=final_timezone,location_totaltime=location_totaltime,system_fonts_totaltime=fonts_totaltime,lang_totaltime=lang_totaltime,overall_totaltime=overall_totaltime)
-            data.save()
+            # latitude = request.POST.get('latitude')
+            # longitude = request.POST.get('longitude')
+            # # data=request.POST.get('data')
+            # # data = json.loads(request.body.decode('utf-8'))
+            # # data_final = data.get("data")
+            # # print('Data received from client:', data_final)
+            # data=print(request.body)
+            webgl = ''
+            canvas_hash = ''
+            browser_version = ''
+            user_agent = ''
+            OS = ''
+            screen_res_height = ''
+            screen_res_width = ''
+            latitude=''
+            if request.method == 'POST':
+                
+                data = json.loads(request.body.decode('utf-8'))
+                
+                webgl = data['data']['webgl']
+                webgl_total_time = data['data']['webgl_total_time']
+                canvas_hash = data['data']['canvas_hash']
+                canvas_total_time = data['data']['canvas_total_time']
+                plugins = data['data']['plugins']
+                plugins_totaltime = data['data']['plugins_totaltime']
+                browser_fonts = data['data']['browser_fonts']
+                browser_fonts_totaltime = data['data']['browser_fonts_totaltime']
+                browser_version = data['data']['browser_version']
+                browser_version_total_time = data['data']['browser_version_total_time']
+                user_agent = data['data']['userAgent']
+                useragent_total_time = data['data']['useragent_total_time']
+                OS = data['data']['OS']
+                os_plat_total_time = data['data']['os_plat_total_time']
+                screen_res_height = data['data']['screen_res_height']
+                screen_res_width = data['data']['screen_res_width']
+                screen_res_total_time = data['data']['screen_res_total_time']
+                latitude=data['data']['latitude']
+                longitude=data['data']['longitude']
+                print('webgl:', webgl)
+                print('webgl_total_time:', webgl_total_time)
+                print('canvas_hash:', canvas_hash)
+                print('canvas_total_time:', canvas_total_time)
+                print('plugins:', plugins)
+                print('plugins_totaltime:', plugins_totaltime)
+                print('browser_fonts:', browser_fonts)
+                print('browser_fonts_totaltime:', browser_fonts_totaltime)
+                print('browser_version:', browser_version)
+                print('browser_version_total_time:', browser_version_total_time)
+                print('user_agent:', user_agent)
+                print('useragent_total_time:', useragent_total_time)
+                print('OS:', OS)
+                print('os_plat_total_time:', os_plat_total_time)
+                print('screen_res_height:', screen_res_height)
+                print('screen_res_width:', screen_res_width)
+                print('screen_res_total_time:', screen_res_total_time)
+                print('latitude:', latitude)
+                print('longitude:', longitude)
+
+                # you can then print or use these variables as needed
+           
+            # data = print(type(request.body.decode('utf-8')))
+            # data = print("2nd hai",json.loads(request.body.decode('utf-8')))
+            # if data is not None:
+            #     print('data hai')
+            #     parsed_data = json.loads(data)
+            # # do something with the parsed data
+            # else:
+            #     print("data nahi hai")
+            #     parsed_data = json.loads(data)
+            # webgl = parsed_data['data']['webgl']
+            # print(webgl)
+            # latitude = data.get('latitude')
+            # longitude = data.get('longitude')
+            # data_final = print(data.get("data"))
+                geo_loc_end_time=time.time()
+                geolocation_totaltime=geo_loc_end_time-geo_loc_time
+                total_end=time.time()
+                overall_totaltime=total_end-total_start
+                
+                print(ip_address)
+                data=data_collected(Uid=uid,userid=username,latitude=latitude,longitude=longitude,webgl=webgl,webgl_totaltime=webgl_total_time,canvas=canvas_hash,canvas_totaltime=canvas_total_time,screen_res_height=screen_res_height,screen_res_width=screen_res_width,geolocation_totaltime=geolocation_totaltime,plugins=plugins,ip=ip_address,system_fonts=sys_fonts,language=lang,time_zone =local_timezone,date=naive_datetime.date(),time_collected=time_collected,city=city,region=region,country=country,browser_name=browser_ua.family, browser_version =browser_ua.version_string,os_family=system_ua.family,os_version=system_ua.version_string,ua_totaltime=ua_totaltime,ip_totaltime=final_ip,timezone_totaltime=final_timezone,location_totaltime=location_totaltime,system_fonts_totaltime=fonts_totaltime,lang_totaltime=lang_totaltime,overall_totaltime=overall_totaltime)
+                data.save()
 
     
-            return render(request, 'auth/home.html')
+        return render(request, 'auth/home.html')
 
 
 

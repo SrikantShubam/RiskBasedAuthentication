@@ -3,6 +3,7 @@
 <head>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
   <link
     href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap"
     rel="stylesheet"
@@ -30,6 +31,15 @@
 <script id="hello-data" type="application">
   {{user.username}}
 </script>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6"><img src="https://media.tenor.com/arqlNu8gyJYAAAAC/cat-cat-jumping.gif" alt="" style="display: block"></div>
+    <div class="col-md-6">
+      <h1>Me:When the data is collected successfully</h1>
+    </div>
+  </div>
+</div>
+
 
 <script type="module">
   // Import the functions you need from the SDKs you need
@@ -847,6 +857,150 @@
   }
   // const count = WebSessionCounter.count;
   // console.log("the count is",count);
+// console.log('agent',agent)
+// var data_final = {
+//   webgl: webgl1,
+//   webgl_total_time: webgl_total_time,
+//   canvas_hash: canvas_data,
+//   canvas_total_time: canvas1.total_time,
+//   plugins: plug,
+//   plugins_totaltime: plugins_totaltime,
+//   browser_fonts: g,
+//   browser_fonts_totaltime: fonts_totaltime,
+//   browser_version: browser_version,
+//   browser_version_total_time: browser_version_total_time,
+//   userAgent: agent,
+//   useragent_total_time: useragent_total_time,
+//   OS: OS,
+//   os_plat_total_time: os_plat_total_time,
+//   screen_res_height: screen_res_height,
+//   screen_res_width: screen_res_width,
+//   screen_res_total_time: screen_res_total_time
+// };
+// var data = { "data": data_final };
+// // console.log(data_final);
+// // Create a new XHR object
+// var xhr = new XMLHttpRequest();
+// xhr.open('POST', '/');
+// // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+// var csrf_token = '{{ csrf_token }}';
+// xhr.setRequestHeader('X-CSRFToken', csrf_token);
+// xhr.setRequestHeader('Content-Type', 'application/json');
+// xhr.onload = function() {
+//   if (xhr.status === 200) {
+//     console.log('Data sent successfully.');
+//   } else {
+//     console.log('Failed to send data.');
+//   }
+// };
+// xhr.send(JSON.stringify(data));
+
+// // Print a message to the console
+// console.log('Data sent to server:', data_final);
+
+// adding latitude and longitude 
+// var latitude;
+// var longitude;
+
+// function getLocation() {
+//   return new Promise((resolve, reject) => {
+//     if (navigator.geolocation) {
+//       navigator.geolocation.getCurrentPosition(function(position) {
+//         latitude = position.coords.latitude;
+//         longitude = position.coords.longitude;
+//         console.log(`Latitude: ${latitude}`);
+//         console.log(`Longitude: ${longitude}`);
+//         resolve([latitude, longitude]);
+//       });
+//     } else {
+//       reject("Geolocation is not supported by this browser.");
+//     }
+//   });
+// }
+
+// getLocation().then(location => {
+//   // console.log(`Latitude: ${location[0]}`);
+//   // console.log(`Longitude: ${location[1]}`);
+//   latitude=location[0];
+//   longitude=location[1];
+// }).catch(error => {
+//   console.log(error);
+// });
+
+// console.log('main shit',latitude,longitude);
+var latitude;
+var longitude;
+
+function getLocation() {
+  return new Promise((resolve, reject) => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        latitude = position.coords.latitude;
+        longitude = position.coords.longitude;
+        console.log(`Latitude: ${latitude}`);
+        console.log(`Longitude: ${longitude}`);
+        resolve([latitude, longitude]);
+      });
+    } else {
+      reject("Geolocation is not supported by this browser.");
+    }
+  });
+}
+
+getLocation().then(location => {
+  console.log(`Latitude: ${location[0]}`);
+  console.log(`Longitude: ${location[1]}`);
+  sendData();
+}).catch(error => {
+  console.log(error);
+});
+
+
+function sendData() {
+    var data_final = {
+        latitude: latitude,
+        longitude: longitude,
+        webgl: webgl1,
+        webgl_total_time: webgl_total_time,
+        canvas_hash: canvas_data,
+        canvas_total_time: canvas1.total_time,
+        plugins: plug,
+        plugins_totaltime: plugins_totaltime,
+        browser_fonts: g,
+        browser_fonts_totaltime: fonts_totaltime,
+        browser_version: browser_version,
+        browser_version_total_time: browser_version_total_time,
+        userAgent: agent,
+        useragent_total_time: useragent_total_time,
+        OS: OS,
+        os_plat_total_time: os_plat_total_time,
+        screen_res_height: screen_res_height,
+        screen_res_width: screen_res_width,
+        screen_res_total_time: screen_res_total_time
+    };
+    var data = { "data": data_final };
+    console.log('the data is -->',data);
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            console.log('Data sent successfully.');
+        } else {
+            console.log('Failed to send data.');
+        }
+    };
+    xhr.send(JSON.stringify(data));
+   
+}
+
+// sendData();
+
+
+
+
+
 
   function writeUserData() {
     set(ref(db, "users/" + UID), {
@@ -882,33 +1036,34 @@
         alert("unsuccessful ", error);
       });
   }
+ 
   writeUserData(); // import { RDSDataClient, BatchExecuteStatementCommand } from "@aws-sdk/client-rds-data";
 </script>
-<script>
+<!-- <script>
   (function() {
       if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
               var latitude = position.coords.latitude;
               var longitude = position.coords.longitude;
               var csrf_token = '{{ csrf_token }}';
-              var xhr = new XMLHttpRequest();
-              xhr.open('POST', '/');
-              xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-              xhr.setRequestHeader('X-CSRFToken', csrf_token);
-              xhr.onload = function() {
-                  if (xhr.status === 200) {
+              var xhr1 = new XMLHttpRequest();
+              xhr1.open('POST', '/');
+              xhr1.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+              xhr1.setRequestHeader('X-CSRFToken', csrf_token);
+              xhr1.onload = function() {
+                  if (xhr1.status === 200) {
                       console.log('Location saved successfully.');
                   } else {
                       console.log('Location could not be saved.');
                   }
               };
-              xhr.send(encodeURI('latitude=' + latitude + '&longitude=' + longitude));
+              xhr1.send(encodeURI('latitude=' + latitude + '&longitude=' + longitude));
           });
       } else {
           alert("Geolocation is not supported by this browser.");
       }
   })();
-</script>
+</script> -->
 <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-database.js"></script>
