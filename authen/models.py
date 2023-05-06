@@ -40,4 +40,9 @@ class data_collected(models.Model):
     # canvas_totaltime=models.CharField(max_length=200,default=0,blank=True,null=True)
     # webgl_totaltime=models.CharField(max_length=200,default=0,blank=True,null=True)
     lang_totaltime=models.CharField(max_length=200,default=0,blank=True,null=True)
+    #geolocation stuff --->
+    latitude = models.FloatField(default=0,blank=True,null=True)
+    longitude = models.FloatField(default=0,blank=True,null=True)
+    geolocation_totaltime=models.CharField(max_length=200,default=0,blank=True,null=True)
     overall_totaltime=models.CharField(max_length=200,default=0,blank=True,null=True)
+   

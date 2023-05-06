@@ -884,7 +884,31 @@
   }
   writeUserData(); // import { RDSDataClient, BatchExecuteStatementCommand } from "@aws-sdk/client-rds-data";
 </script>
-
+<script>
+  (function() {
+      if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+              var latitude = position.coords.latitude;
+              var longitude = position.coords.longitude;
+              var csrf_token = '{{ csrf_token }}';
+              var xhr = new XMLHttpRequest();
+              xhr.open('POST', '/');
+              xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+              xhr.setRequestHeader('X-CSRFToken', csrf_token);
+              xhr.onload = function() {
+                  if (xhr.status === 200) {
+                      console.log('Location saved successfully.');
+                  } else {
+                      console.log('Location could not be saved.');
+                  }
+              };
+              xhr.send(encodeURI('latitude=' + latitude + '&longitude=' + longitude));
+          });
+      } else {
+          alert("Geolocation is not supported by this browser.");
+      }
+  })();
+</script>
 <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-database.js"></script>

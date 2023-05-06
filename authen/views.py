@@ -178,12 +178,16 @@ def home(request):
             # os.remove(r'C:\Users\Srikant Shubham\Downloads\plugins.json')
             # os.remove(r"C:\Users\Srikant Shubham\Downloads\canvas.json")
             # os.remove(r"C:\Users\Srikant Shubham\Downloads\webgl.json")
-           
+            geo_loc_time=time.time()
+            latitude = request.POST.get('latitude')
+            longitude = request.POST.get('longitude')
+            geo_loc_end_time=time.time()
+            geolocation_totaltime=geo_loc_end_time-geo_loc_time
             total_end=time.time()
             overall_totaltime=total_end-total_start
-
+            
             print(ip_address)
-            data=data_collected(Uid=uid,userid=username,ip=ip_address,system_fonts=sys_fonts,language=lang,time_zone =local_timezone,date=naive_datetime.date(),time_collected=time_collected,city=city,region=region,country=country,browser_name=browser_ua.family, browser_version =browser_ua.version_string,os_family=system_ua.family,os_version=system_ua.version_string,ua_totaltime=ua_totaltime,ip_totaltime=final_ip,timezone_totaltime=final_timezone,location_totaltime=location_totaltime,system_fonts_totaltime=fonts_totaltime,lang_totaltime=lang_totaltime,overall_totaltime=overall_totaltime)
+            data=data_collected(Uid=uid,userid=username,latitude=latitude,longitude=longitude,geolocation_totaltime=geolocation_totaltime,ip=ip_address,system_fonts=sys_fonts,language=lang,time_zone =local_timezone,date=naive_datetime.date(),time_collected=time_collected,city=city,region=region,country=country,browser_name=browser_ua.family, browser_version =browser_ua.version_string,os_family=system_ua.family,os_version=system_ua.version_string,ua_totaltime=ua_totaltime,ip_totaltime=final_ip,timezone_totaltime=final_timezone,location_totaltime=location_totaltime,system_fonts_totaltime=fonts_totaltime,lang_totaltime=lang_totaltime,overall_totaltime=overall_totaltime)
             data.save()
 
     
