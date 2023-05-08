@@ -48,7 +48,7 @@ MIDDLEWARE = [
     'django_user_agents.middleware.UserAgentMiddleware',
     'django.middleware.security.SecurityMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
-#'django.middleware.csrf.CsrfViewMiddleware',
+'django.middleware.csrf.CsrfViewMiddleware',
 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -81,7 +81,7 @@ AUTH_USER_MODEL = 'authen.CustomUser'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 CSRF_COOKIE_DOMAIN = 'https://riskbasedauthentication-production.up.railway.app'
-CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = False
 CSRF_COOKIE_HTTPONLY = False
 CSRF_TRUSTED_ORIGINS=[
     "https://riskbasedauthentication-production.up.railway.app",
@@ -90,6 +90,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://riskbasedauthentication-production.up.railway.app",
     # Add other allowed origins here if needed
 ]
+CSRF_COOKIE_DOMAIN=["https://riskbasedauthentication-production.up.railway.app"]
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
