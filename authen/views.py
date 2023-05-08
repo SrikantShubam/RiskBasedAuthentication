@@ -12,6 +12,7 @@ import requests
 
 from time import gmtime, strftime
 from datetime import date
+from django.db.models import Count
 
 
 from django.db import models, signals
