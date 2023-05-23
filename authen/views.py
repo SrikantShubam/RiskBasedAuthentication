@@ -13,6 +13,7 @@ import requests
 from time import gmtime, strftime
 from datetime import date
 from django.db.models import Count
+from django.middleware import csrf
 
 
 from django.db import models, signals
@@ -21,12 +22,23 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
+from screeninfo import get_monitors
 
 @csrf_exempt
 def home(request):
     
         
         if request.user is not None :
+           
+
+        # Get the primary monitor's information
+            primary_monitor = get_monitors()[0]
+
+            # Retrieve the screen resolution
+            
+
+            # Print the screen resolution
+            
             obj11=datetime.datetime.now()
             time_stamp=str(make_aware(obj11).hour)+"H"+str(make_aware(obj11).minute)+"M"
             date_stamp=str(make_aware(obj11).day)+"D"+str(make_aware(obj11).month)+"M"+str(make_aware(obj11).year)+"Y"
@@ -79,9 +91,20 @@ def home(request):
 
              # getting ip-----------------------------------
             start_ip = time.time()
-            response = requests.get('https://api64.ipify.org?format=json').json()
-            ip_address =  request.META.get('HTTP_X_FORWARDED_FOR', request.META.get('REMOTE_ADDR'))
 
+            
+        
+
+
+          
+
+            ip1 = requests.get("https://api64.ipify.org/?format=json").json().get('ip')
+            ip2 = requests.get("https://api-bdc.net/data/client-ip").json().get('ipString')
+            ip3 = requests.get('https://ipapi.co/ip/').text.strip()
+
+            ip_address = max(ip1, ip2, ip3) if ip1 == ip2 == ip3 else "All three values are different" if len({ip1, ip2, ip3}) == 3 else ip1
+       
+           
 #             ip_address=print(request.META['REMOTE_ADDR'])
 
             print('the ip address-------',ip_address)
@@ -93,12 +116,24 @@ def home(request):
 
             #location start ----------------------
             # getting location from the ip 
-            response = requests.get(f'https://ipapi.co/{ip_address}/json/').json()
+
+            
+          
+            # response = requests.get(f'https://ipapi.co/{ip_address}/json/').json()
             location_start=time.time()
-                # "ip": ip_address,
-            city= response.get("city")
-            region=response.get("region")
-            country= response.get("country_name")
+            data=requests.get("https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=&longitude").json()
+
+            city=data.get('city')
+            country=data.get('countryName')
+            region=data.get('principalSubdivision')
+            latitude=data.get('latitude')
+            longitude=data.get("longitude")
+            # "ip": ip_address,
+            # city= response.get("city")
+            
+            
+            # country= response.get("country_name")
+            print(data)
             location_end=time.time()
             location_totaltime=location_end-location_start
             #location end-------------------------
@@ -181,7 +216,7 @@ def home(request):
             # os.remove(r'C:\Users\Srikant Shubham\Downloads\plugins.json')
             # os.remove(r"C:\Users\Srikant Shubham\Downloads\canvas.json")
             # os.remove(r"C:\Users\Srikant Shubham\Downloads\webgl.json")
-            geo_loc_time=time.time()
+            # geo_loc_time=time.time()
             # latitude = request.POST.get('latitude')
             # longitude = request.POST.get('longitude')
             # # data=request.POST.get('data')
@@ -196,7 +231,7 @@ def home(request):
             OS = ''
             screen_res_height = ''
             screen_res_width = ''
-            latitude=''
+            # latitude=''
             if request.method == 'POST':
                 
                 data = json.loads(request.body.decode('utf-8'))
@@ -218,8 +253,8 @@ def home(request):
                 screen_res_height = data['data']['screen_res_height']
                 screen_res_width = data['data']['screen_res_width']
                 screen_res_total_time = data['data']['screen_res_total_time']
-                latitude=data['data']['latitude']
-                longitude=data['data']['longitude']
+                # latitude=data['data']['latitude']
+                # longitude=data['data']['longitude']
                 print('webgl:', webgl)
                 print('webgl_total_time:', webgl_total_time)
                 print('canvas_hash:', canvas_hash)
@@ -237,8 +272,8 @@ def home(request):
                 print('screen_res_height:', screen_res_height)
                 print('screen_res_width:', screen_res_width)
                 print('screen_res_total_time:', screen_res_total_time)
-                print('latitude:', latitude)
-                print('longitude:', longitude)
+                # print('latitude:', latitude)
+                # print('longitude:', longitude)
 
                 # you can then print or use these variables as needed
            
@@ -256,21 +291,23 @@ def home(request):
             # latitude = data.get('latitude')
             # longitude = data.get('longitude')
             # data_final = print(data.get("data"))
-                geo_loc_end_time=time.time()
-                geolocation_totaltime=geo_loc_end_time-geo_loc_time
+                # geo_loc_end_time=time.time()
+                # geolocation_totaltime=geo_loc_end_time-geo_loc_time
                 total_end=time.time()
                 overall_totaltime=total_end-total_start
+                csrf_token = csrf.get_token(request)
+                # print(request.META)
                 
-                print(ip_address)
-                data=data_collected(Uid=uid,userid=username,latitude=latitude,longitude=longitude,webgl=webgl,webgl_totaltime=webgl_total_time,canvas=canvas_hash,canvas_totaltime=canvas_total_time,screen_res_height=screen_res_height,screen_res_width=screen_res_width,geolocation_totaltime=geolocation_totaltime,plugins=plugins,ip=ip_address,system_fonts=sys_fonts,language=lang,time_zone =local_timezone,date=naive_datetime.date(),time_collected=time_collected,city=city,region=region,country=country,browser_name=browser_ua.family, browser_version =browser_ua.version_string,os_family=system_ua.family,os_version=system_ua.version_string,ua_totaltime=ua_totaltime,ip_totaltime=final_ip,timezone_totaltime=final_timezone,location_totaltime=location_totaltime,system_fonts_totaltime=fonts_totaltime,lang_totaltime=lang_totaltime,overall_totaltime=overall_totaltime)
+                # print(ip_address)
+                data=data_collected(Uid=uid,userid=username,latitude=latitude,longitude=longitude,webgl=webgl,webgl_totaltime=webgl_total_time,canvas=canvas_hash,canvas_totaltime=canvas_total_time,screen_res_height=primary_monitor.height,screen_res_width=primary_monitor.width,geolocation_totaltime=location_totaltime,plugins=plugins,ip=ip_address,system_fonts=sys_fonts,language=lang,time_zone =local_timezone,date=naive_datetime.date(),time_collected=time_collected,city=city,region=region,country=country,browser_name=browser_ua.family, browser_version =browser_ua.version_string,os_family=system_ua.family,os_version=system_ua.version_string,ua_totaltime=ua_totaltime,ip_totaltime=final_ip,timezone_totaltime=final_timezone,location_totaltime=location_totaltime,system_fonts_totaltime=fonts_totaltime,lang_totaltime=lang_totaltime,overall_totaltime=overall_totaltime)
                 data.save()
 
-    
+
         return render(request, 'auth/home.html')
 
 
 
-
+@csrf_exempt
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)

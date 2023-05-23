@@ -28,7 +28,7 @@ SECRET_KEY = 'f)!tm9&$wiue!bzecy58ql1tlas+gcae0s0b6^a7yt37$u!en+'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
+# APPEND_SLASH=False
 
 # Application definition
 
@@ -48,8 +48,7 @@ MIDDLEWARE = [
     'django_user_agents.middleware.UserAgentMiddleware',
     'django.middleware.security.SecurityMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
-'django.middleware.csrf.CsrfViewMiddleware',
-
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     #'django.middleware.csrf.CsrfViewMiddleware',

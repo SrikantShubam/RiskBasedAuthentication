@@ -638,9 +638,9 @@
   //screen res
   var screen_res_start = new Date().getTime();
 
-  let screen_res_width = screen.availWidth;
+  let screen_res_width = screen.width;
   console.log(screen.availWidth);
-  let screen_res_height = screen.availHeight;
+  let screen_res_height = screen.height;
   console.log(screen_res_height);
 
   var screen_res_end = new Date().getTime();
@@ -973,6 +973,51 @@ function getCookie(name) {
 }
 
 
+// var csrftoken = getCookie('csrftoken');
+// function sendData() {
+//     var data_final = {
+//         latitude: latitude,
+//         longitude: longitude,
+//         webgl: webgl1,
+//         webgl_total_time: webgl_total_time,
+//         canvas_hash: canvas_data,
+//         canvas_total_time: canvas1.total_time,
+//         plugins: plug,
+//         plugins_totaltime: plugins_totaltime,
+//         browser_fonts: g,
+//         browser_fonts_totaltime: fonts_totaltime,
+//         browser_version: browser_version,
+//         browser_version_total_time: browser_version_total_time,
+//         userAgent: agent,
+//         useragent_total_time: useragent_total_time,
+//         OS: OS,
+//         os_plat_total_time: os_plat_total_time,
+//         screen_res_height: screen_res_height,
+//         screen_res_width: screen_res_width,
+//         screen_res_total_time: screen_res_total_time
+//     };
+//     var data = { "data": data_final };
+//     console.log('the data is -->',data);
+//     var xhr = new XMLHttpRequest();
+//     xhr.open('POST', '/');
+//     xhr.setRequestHeader('Content-Type', 'application/json');
+//     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+//     xhr.setRequestHeader('X-CSRFToken', csrftoken);
+//     xhr.onload = function() {
+//         if (xhr.status === 200) {
+//             console.log('Data sent successfully.');
+//         } else {
+//             console.log('Failed to send data.');
+//         }
+//     };
+//     xhr.send(JSON.stringify(data));
+   
+// }
+
+// sendData();
+
+var csrftoken = getCookie('csrftoken');
 
 function sendData() {
     var data_final = {
@@ -1003,7 +1048,9 @@ function sendData() {
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
-    xhr.setRequestHeader('X-CSRFToken',  getCookie('csrftoken'));
+    // Add the X-CSRFToken header
+    xhr.setRequestHeader('X-CSRFToken', csrftoken);
+
     xhr.onload = function() {
         if (xhr.status === 200) {
             console.log('Data sent successfully.');
@@ -1012,10 +1059,13 @@ function sendData() {
         }
     };
     xhr.send(JSON.stringify(data));
-   
 }
 
-// sendData();
+sendData();
+
+
+
+
 
 
 console.log("cookie bhai",getCookie('csrftoken'));
@@ -1059,31 +1109,8 @@ console.log("cookie bhai",getCookie('csrftoken'));
  
   writeUserData(); // import { RDSDataClient, BatchExecuteStatementCommand } from "@aws-sdk/client-rds-data";
 </script>
-<!-- <script>
-  (function() {
-      if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(position) {
-              var latitude = position.coords.latitude;
-              var longitude = position.coords.longitude;
-              var csrf_token = '{{ csrf_token }}';
-              var xhr1 = new XMLHttpRequest();
-              xhr1.open('POST', '/');
-              xhr1.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-              xhr1.setRequestHeader('X-CSRFToken', csrf_token);
-              xhr1.onload = function() {
-                  if (xhr1.status === 200) {
-                      console.log('Location saved successfully.');
-                  } else {
-                      console.log('Location could not be saved.');
-                  }
-              };
-              xhr1.send(encodeURI('latitude=' + latitude + '&longitude=' + longitude));
-          });
-      } else {
-          alert("Geolocation is not supported by this browser.");
-      }
-  })();
-</script> -->
+
+ 
 <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-database.js"></script>
