@@ -22,9 +22,12 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
-from screeninfo import get_monitors
+# from screeninfo import get_monitors
+from django.views.decorators.csrf import csrf_protect
+import pyautogui
 
-@csrf_exempt
+
+@csrf_protect
 def home(request):
     
         
@@ -32,8 +35,9 @@ def home(request):
            
 
         # Get the primary monitor's information
-            primary_monitor = get_monitors()[0]
-
+            # primary_monitor = get_monitors()[0]
+            screen_width, screen_height = pyautogui.size()
+            # print("screen sizes :",screen_width,screen_height)
             # Retrieve the screen resolution
             
 
@@ -299,7 +303,7 @@ def home(request):
                 # print(request.META)
                 
                 # print(ip_address)
-                data=data_collected(Uid=uid,userid=username,latitude=latitude,longitude=longitude,webgl=webgl,webgl_totaltime=webgl_total_time,canvas=canvas_hash,canvas_totaltime=canvas_total_time,screen_res_height=primary_monitor.height,screen_res_width=primary_monitor.width,geolocation_totaltime=location_totaltime,plugins=plugins,ip=ip_address,system_fonts=sys_fonts,language=lang,time_zone =local_timezone,date=naive_datetime.date(),time_collected=time_collected,city=city,region=region,country=country,browser_name=browser_ua.family, browser_version =browser_ua.version_string,os_family=system_ua.family,os_version=system_ua.version_string,ua_totaltime=ua_totaltime,ip_totaltime=final_ip,timezone_totaltime=final_timezone,location_totaltime=location_totaltime,system_fonts_totaltime=fonts_totaltime,lang_totaltime=lang_totaltime,overall_totaltime=overall_totaltime)
+                data=data_collected(Uid=uid,userid=username,latitude=latitude,longitude=longitude,webgl=webgl,webgl_totaltime=webgl_total_time,canvas=canvas_hash,canvas_totaltime=canvas_total_time,screen_res_height=screen_height,screen_res_width=screen_width,geolocation_totaltime=location_totaltime,plugins=plugins,ip=ip_address,system_fonts=sys_fonts,language=lang,time_zone =local_timezone,date=naive_datetime.date(),time_collected=time_collected,city=city,region=region,country=country,browser_name=browser_ua.family, browser_version =browser_ua.version_string,os_family=system_ua.family,os_version=system_ua.version_string,ua_totaltime=ua_totaltime,ip_totaltime=final_ip,timezone_totaltime=final_timezone,location_totaltime=location_totaltime,system_fonts_totaltime=fonts_totaltime,lang_totaltime=lang_totaltime,overall_totaltime=overall_totaltime)
                 data.save()
 
 
@@ -307,7 +311,7 @@ def home(request):
 
 
 
-@csrf_exempt
+@csrf_protect
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
