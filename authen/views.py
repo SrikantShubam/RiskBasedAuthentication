@@ -24,11 +24,13 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 # from screeninfo import get_monitors
 from django.views.decorators.csrf import csrf_protect
-import pyautogui
+
 
 
 @csrf_protect
 def home(request):
+        API_KEY="9be409cec7b94f2b97f0e2409b44a09b"    
+
     
         
         if request.user is not None :
@@ -36,7 +38,7 @@ def home(request):
 
         # Get the primary monitor's information
             # primary_monitor = get_monitors()[0]
-            screen_width, screen_height = pyautogui.size()
+            # screen_width, screen_height = pyautogui.size()
             # print("screen sizes :",screen_width,screen_height)
             # Retrieve the screen resolution
             
@@ -124,23 +126,7 @@ def home(request):
             
           
             # response = requests.get(f'https://ipapi.co/{ip_address}/json/').json()
-            location_start=time.time()
-            data=requests.get("https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=&longitude").json()
-
-            city=data.get('city')
-            country=data.get('countryName')
-            region=data.get('principalSubdivision')
-            latitude=data.get('latitude')
-            longitude=data.get("longitude")
-            # "ip": ip_address,
-            # city= response.get("city")
             
-            
-            # country= response.get("country_name")
-            print(data)
-            location_end=time.time()
-            location_totaltime=location_end-location_start
-            #location end-------------------------
 
 
             #browser start----------------------------
@@ -257,8 +243,11 @@ def home(request):
                 screen_res_height = data['data']['screen_res_height']
                 screen_res_width = data['data']['screen_res_width']
                 screen_res_total_time = data['data']['screen_res_total_time']
-                # latitude=data['data']['latitude']
-                # longitude=data['data']['longitude']
+                latitude=data['data']['latitude']
+                longitude=data['data']['longitude']
+
+                
+
                 print('webgl:', webgl)
                 print('webgl_total_time:', webgl_total_time)
                 print('canvas_hash:', canvas_hash)
@@ -297,17 +286,51 @@ def home(request):
             # data_final = print(data.get("data"))
                 # geo_loc_end_time=time.time()
                 # geolocation_totaltime=geo_loc_end_time-geo_loc_time
+                location_start=time.time()
+
+                print("collected from getCurrentLocation",latitude,longitude)
+                url = "https://api.geoapify.com/v1/geocode/reverse?lat={0}&lon={1}&format=json&apiKey={2}".format(latitude,longitude,API_KEY)
+                res=requests.get(url).json()
+                print("using geolocay->",res)
+                city=res['results'][0]['city']
+                print(city)
+                country=print(res['results'][0]['country'])
+                region=print(res['results'][0]['state'])
+                location_end=time.time()
+                location_totaltime=location_end-location_start
+                # locay=str(city+region+country+"from geoapify"
+                if latitude is  None and longitude is  None:
+                    location_start=time.time()
+                    data=requests.get("https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=&longitude").json()
+                    latitude=data.get('latitude')
+                    longitude=data.get("longitude")
+                    city=data.get('city')
+                    country=data.get('countryName')
+                    region=data.get('principalSubdivision')
+                
+                    # "ip": ip_address,
+                    # city= response.get("city")
+                    
+                    
+                    # country= response.get("country_name")
+                    print(data)
+                    location_end=time.time()
+                    location_totaltime=location_end-location_start
+                else:
+                    location_totaltime=0    
+                    #location end-------------------------
+                
                 total_end=time.time()
                 overall_totaltime=total_end-total_start
                 csrf_token = csrf.get_token(request)
-                # print(request.META)
-                
-                # print(ip_address)
-                data=data_collected(Uid=uid,userid=username,latitude=latitude,longitude=longitude,webgl=webgl,webgl_totaltime=webgl_total_time,canvas=canvas_hash,canvas_totaltime=canvas_total_time,screen_res_height=screen_height,screen_res_width=screen_width,geolocation_totaltime=location_totaltime,plugins=plugins,ip=ip_address,system_fonts=sys_fonts,language=lang,time_zone =local_timezone,date=naive_datetime.date(),time_collected=time_collected,city=city,region=region,country=country,browser_name=browser_ua.family, browser_version =browser_ua.version_string,os_family=system_ua.family,os_version=system_ua.version_string,ua_totaltime=ua_totaltime,ip_totaltime=final_ip,timezone_totaltime=final_timezone,location_totaltime=location_totaltime,system_fonts_totaltime=fonts_totaltime,lang_totaltime=lang_totaltime,overall_totaltime=overall_totaltime)
+                    # print(request.META)
+                    
+                    # print(ip_address)
+                data=data_collected(Uid=uid,userid=username,latitude=latitude,longitude=longitude,webgl=webgl,webgl_totaltime=webgl_total_time,canvas=canvas_hash,canvas_totaltime=canvas_total_time,screen_res_height=screen_res_height,screen_res_width=screen_res_width,geolocation_totaltime=location_totaltime,plugins=plugins,ip=ip_address,system_fonts=sys_fonts,language=lang,time_zone =local_timezone,date=naive_datetime.date(),time_collected=time_collected,city=city,region=region,country=country,browser_name=browser_ua.family, browser_version =browser_ua.version_string,os_family=system_ua.family,os_version=system_ua.version_string,ua_totaltime=ua_totaltime,ip_totaltime=final_ip,timezone_totaltime=final_timezone,location_totaltime=location_totaltime,system_fonts_totaltime=fonts_totaltime,lang_totaltime=lang_totaltime,overall_totaltime=overall_totaltime)
                 data.save()
 
 
-        return render(request, 'auth/home.html')
+            return render(request, 'auth/home.html')
 
 
 
