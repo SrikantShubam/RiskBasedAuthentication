@@ -294,8 +294,8 @@ def home(request):
                 print("using geolocay->",res)
                 city=res['results'][0]['city']
                 print(city)
-                country=print(res['results'][0]['country'])
-                region=print(res['results'][0]['state'])
+                country=res['results'][0]['country']
+                region=res['results'][0]['state']
                 location_end=time.time()
                 location_totaltime=location_end-location_start
                 # locay=str(city+region+country+"from geoapify"
